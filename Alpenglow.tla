@@ -201,10 +201,15 @@ HonestCanSkipTimeout(n, s) ==
     /\ HonestReadyBase(n, s)
     /\ ~HonestHasVoted(n, s)
     /\ timeoutsFired[WindowRoot(s)]
+    /\ SlotFinalizedBlocks(s) = {}  \* Cannot skip if slot already finalized
 
 HonestCanFallbackNotar(n, s, b) == HonestReadyBase(n, s) /\ HonestHasVoted(n, s) /\ SafeToNotar(s, b)
 
-HonestCanFallbackSkip(n, s) == HonestReadyBase(n, s) /\ HonestHasVoted(n, s) /\ SafeToSkip(s)
+HonestCanFallbackSkip(n, s) == 
+    /\ HonestReadyBase(n, s) 
+    /\ HonestHasVoted(n, s) 
+    /\ SafeToSkip(s)
+    /\ SlotFinalizedBlocks(s) = {}  \* Cannot skip if slot already finalized
 
 HonestCanFinalVote(n, s, b) ==
     /\ n \in Honest
