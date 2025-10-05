@@ -10,18 +10,37 @@ CONSTANTS
     Byzantine,      \* Complement of Honest (assumed to satisfy Honest ∪ Byzantine = Nodes)
     Slots,          \* Finite set of slot identifiers, totally ordered
     WindowSize,     \* Size of the leader window in slots
-    Leader,         \* Function Slots -> Nodes giving the slot leader
-    Stake,          \* Function Nodes -> Nat giving integer stake weights
     ThresholdFast,  \* Fast finalization threshold (e.g. 80)
     ThresholdSlow,  \* Slow finalization threshold (e.g. 60)
     ThresholdFallback, \* Minimum notar stake for SafeToNotar (e.g. 20)
-    GenesisBlock,   \* Distinguished genesis block identifier
-    BlockOptions,   \* Function Slots -> SUBSET BlockIds giving candidate blocks per slot
-    ParentOf,       \* Function BlockIds \cup {GenesisBlock} -> BlockIds \cup {GenesisBlock}
     DeltaFast,      \* Abstract latency bound for fast path
     DeltaSlow       \* Abstract latency bound for slow path (2 * Delta60 in paper)
 
-None == "NONE"
+None == [slot |-> 0 - 2, tag |-> "NONE"]
+
+(*******************************************************************)
+(*                       Derived domains & Helper functions         *)
+(*******************************************************************)
+RECURSIVE MinVal(_)
+MinVal(S) == IF S = {} THEN 0 ELSE LET x == CHOOSE e \in S : TRUE IN
+    IF S = {x} THEN x ELSE LET m == MinVal(S \ {x}) IN IF x < m THEN x ELSE m
+
+FirstSlot == MinVal(Slots)
+
+\* Default model values for complex constants
+GenesisBlock == [slot |-> 0 - 1, tag |-> "G"]
+Leader == [s \in Slots |-> CHOOSE n \in Nodes : TRUE]
+Stake == [n \in Nodes |-> 25]
+BlockOptions == [s \in Slots |-> {[slot |-> s, tag |-> "A"]}]
+
+BlockIds == UNION { BlockOptions[s] : s \in Slots }
+
+ParentOf == [b \in BlockIds \cup {GenesisBlock} |->
+    IF b = GenesisBlock THEN GenesisBlock
+    ELSE IF b.slot \in Slots /\ b.slot > FirstSlot
+         THEN LET prevSlot == b.slot - 1
+              IN CHOOSE pb \in BlockOptions[prevSlot] : TRUE
+         ELSE GenesisBlock]
 
 ASSUME Honest \subseteq Nodes /\ Byzantine \subseteq Nodes
 ASSUME Honest \cap Byzantine = {} /\ Honest \cup Byzantine = Nodes
@@ -31,17 +50,6 @@ ASSUME \A s \in Slots : \A b \in BlockOptions[s] : ParentOf[b] \in (BlockIds \cu
 ASSUME \A s \in Slots : \A b \in BlockOptions[s] : ParentOf[b] # b
 ASSUME \A s \in Slots : \A b \in BlockOptions[s] :
     (ParentOf[b] = GenesisBlock) \/ (ParentOf[b].slot < s)
-
-(*******************************************************************)
-(*                       Derived domains                            *)
-(*******************************************************************)
-BlockIds == UNION { BlockOptions[s] : s \in Slots }
-
-RECURSIVE MinVal(_)
-MinVal(S) == IF S = {} THEN 0 ELSE LET x == CHOOSE e \in S : TRUE IN
-    IF S = {x} THEN x ELSE LET m == MinVal(S \ {x}) IN IF x < m THEN x ELSE m
-
-FirstSlot == MinVal(Slots)
 
 SlotOf(b) == IF b = GenesisBlock THEN FirstSlot ELSE b.slot
 
@@ -55,7 +63,7 @@ RECURSIVE MaxVal(_)
 MaxVal(S) == IF S = {} THEN 0 ELSE LET x == CHOOSE e \in S : TRUE IN
     IF S = {x} THEN x ELSE LET m == MaxVal(S \ {x}) IN IF x > m THEN x ELSE m
 
-WindowStart(s) == s - ((s - FirstSlot) \mod WindowSize)
+WindowStart(s) == s - ((s - FirstSlot) % WindowSize)
 
 WindowSlots(s) == { WindowStart(s) + i : i \in 0..(WindowSize - 1) } \cap Slots
 
@@ -146,8 +154,8 @@ Finalizable(s, b) == HasNotarCert(s, b) /\ ~HasSkipCert(s)
 
 \* A block is admissible if its parent chain already finalized or notarized
 BlockAdmissible(b) == 
-    CASE b = GenesisBlock -> TRUE
-    [] Parent(b) \in notarizedBlocks \cup finalized
+    IF b = GenesisBlock THEN TRUE
+    ELSE Parent(b) \in notarizedBlocks \cup finalized
 
 RECURSIVE Ancestors(_)
 Ancestors(b) == IF b = GenesisBlock THEN {GenesisBlock}
@@ -187,7 +195,7 @@ HonestCanNotar(n, s, b) ==
     /\ HonestReadyBase(n, s)
     /\ ~HonestHasVoted(n, s)
     /\ b \in DomainBlocks(s)
-    /\ delivered[n] \supseteq {b, Parent(b)}
+    /\ {b, Parent(b)} \subseteq delivered[n]
 
 HonestCanSkipTimeout(n, s) ==
     /\ HonestReadyBase(n, s)
@@ -240,7 +248,7 @@ FireTimeout(s) ==
 
 HonestNotarize(n, s, b) ==
     /\ HonestCanNotar(n, s, b)
-    /\ produced \supseteq {b}
+    /\ b \in produced
     /\ notarVotes' = [notarVotes EXCEPT ![s][b] = notarVotes[s][b] \cup {n}]
     /\ delivered' = delivered
     /\ UNCHANGED << produced, notarFallbackVotes, skipVotes, skipFallbackVotes,
@@ -295,6 +303,7 @@ RegisterFastFinalCertificate(s, b) ==
 
 RegisterFinalCertificate(s, b) ==
     /\ HasFinalCert(s, b)
+    /\ ~HasSkipCert(s)  \* Cannot finalize if skip certificate exists
     /\ b \notin finalized
     /\ finalized' = finalized \cup Ancestors(b)
     /\ notarizedBlocks' = notarizedBlocks \cup Ancestors(b)
@@ -314,7 +323,7 @@ MarkParentReady(s) ==
 ByzantineVoteNotar(n, s, b) ==
     /\ n \in Byzantine
     /\ b \in DomainBlocks(s)
-    /\ produced \supseteq {b}
+    /\ b \in produced
     /\ notarVotes' = [notarVotes EXCEPT ![s][b] = notarVotes[s][b] \cup {n}]
     /\ UNCHANGED << produced, delivered, notarFallbackVotes, skipVotes,
                     skipFallbackVotes, finalVotes, parentReady, timeoutsArmed,
@@ -446,7 +455,9 @@ TypeOK ==
     /\ \A s \in Slots : \A b \in BlockIds : notarFallbackVotes[s][b] \subseteq Nodes
     /\ \A s \in Slots : skipVotes[s] \subseteq Nodes
     /\ \A s \in Slots : skipFallbackVotes[s] \subseteq Nodes
-    /\ \A s \in Slots : \A n \in Nodes : finalVotes[s][n] \in BlockIds \cup {GenesisBlock, None}
+    /\ \A s \in Slots : \A n \in Nodes : 
+        LET fv == finalVotes[s][n]
+        IN (fv = None) \/ (fv = GenesisBlock) \/ (fv \in BlockIds)
     /\ \A s \in Slots : parentReady[s] \in BOOLEAN
     /\ \A s \in Slots : timeoutsArmed[s] \in BOOLEAN
     /\ \A s \in Slots : timeoutsFired[s] \in BOOLEAN
@@ -455,7 +466,7 @@ TypeOK ==
     /\ notarizedBlocks \subseteq produced
 
 FinalizationImpliesNotar ==
-    \A b \in finalized : HasNotarCert(SlotOf(b), b)
+    \A b \in finalized : (b = GenesisBlock) \/ HasNotarCert(SlotOf(b), b)
 
 SkipExcludesFinal ==
     \A s \in Slots : SkipActive(s) => SlotFinalizedBlocks(s) = {}

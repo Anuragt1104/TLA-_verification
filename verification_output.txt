@@ -1,0 +1,76 @@
+TLC2 Version 2.20 of Day Month 20?? (rev: 4c54d98)
+Running breadth-first search Model-Checking with fp 43 and seed -2542425104218487990 with 1 worker on 8 cores with 1820MB heap and 64MB offheap memory [pid: 60195] (Mac OS X 15.5 aarch64, Eclipse Adoptium 17.0.15 x86_64, MSBDiskFPSet, DiskStateQueue).
+Parsing file /Users/anuragtiwari/Downloads/TLA-_verification/Alpenglow.tla
+Parsing file /private/var/folders/sm/_j43klfd2w32kn6x_qcyqw2w0000gn/T/tlc-7489998256228502290/Naturals.tla (jar:file:/Users/anuragtiwari/.cursor/extensions/tlaplus.vscode-ide-2025.10.32239-universal/tools/tla2tools.jar!/tla2sany/StandardModules/Naturals.tla)
+Parsing file /private/var/folders/sm/_j43klfd2w32kn6x_qcyqw2w0000gn/T/tlc-7489998256228502290/FiniteSets.tla (jar:file:/Users/anuragtiwari/.cursor/extensions/tlaplus.vscode-ide-2025.10.32239-universal/tools/tla2tools.jar!/tla2sany/StandardModules/FiniteSets.tla)
+Parsing file /private/var/folders/sm/_j43klfd2w32kn6x_qcyqw2w0000gn/T/tlc-7489998256228502290/Sequences.tla (jar:file:/Users/anuragtiwari/.cursor/extensions/tlaplus.vscode-ide-2025.10.32239-universal/tools/tla2tools.jar!/tla2sany/StandardModules/Sequences.tla)
+Parsing file /private/var/folders/sm/_j43klfd2w32kn6x_qcyqw2w0000gn/T/tlc-7489998256228502290/TLC.tla (jar:file:/Users/anuragtiwari/.cursor/extensions/tlaplus.vscode-ide-2025.10.32239-universal/tools/tla2tools.jar!/tla2sany/StandardModules/TLC.tla)
+Parsing file /private/var/folders/sm/_j43klfd2w32kn6x_qcyqw2w0000gn/T/tlc-7489998256228502290/_TLCTrace.tla (jar:file:/Users/anuragtiwari/.cursor/extensions/tlaplus.vscode-ide-2025.10.32239-universal/tools/tla2tools.jar!/tla2sany/StandardModules/_TLCTrace.tla)
+Parsing file /private/var/folders/sm/_j43klfd2w32kn6x_qcyqw2w0000gn/T/tlc-7489998256228502290/TLCExt.tla (jar:file:/Users/anuragtiwari/.cursor/extensions/tlaplus.vscode-ide-2025.10.32239-universal/tools/tla2tools.jar!/tla2sany/StandardModules/TLCExt.tla)
+Parsing file /private/var/folders/sm/_j43klfd2w32kn6x_qcyqw2w0000gn/T/tlc-7489998256228502290/Integers.tla (jar:file:/Users/anuragtiwari/.cursor/extensions/tlaplus.vscode-ide-2025.10.32239-universal/tools/tla2tools.jar!/tla2sany/StandardModules/Integers.tla)
+Semantic processing of module Naturals
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module TLC
+Semantic processing of module Integers
+Semantic processing of module TLCExt
+Semantic processing of module _TLCTrace
+Semantic processing of module Alpenglow
+Linting of module TLCExt
+Linting of module _TLCTrace
+Linting of module Alpenglow
+Starting... (2025-10-05 18:59:48)
+Computing initial states...
+Finished computing initial states: 1 distinct state generated at 2025-10-05 18:59:50.
+Progress(6) at 2025-10-05 18:59:53: 21,837 states generated (21,837 s/min), 5,045 distinct states found (5,045 ds/min), 3,733 states left on queue.
+Progress(11) at 2025-10-05 19:00:53: 2,098,004 states generated (2,076,167 s/min), 293,803 distinct states found (288,758 ds/min), 177,532 states left on queue.
+Progress(11) at 2025-10-05 19:01:53: 4,045,138 states generated (1,947,134 s/min), 510,565 distinct states found (216,762 ds/min), 288,942 states left on queue.
+Progress(12) at 2025-10-05 19:02:53: 6,573,374 states generated (2,528,236 s/min), 874,116 distinct states found (363,551 ds/min), 533,523 states left on queue.
+Progress(12) at 2025-10-05 19:03:53: 8,933,544 states generated (2,360,170 s/min), 1,096,652 distinct states found (222,536 ds/min), 627,163 states left on queue.
+Progress(13) at 2025-10-05 19:04:53: 10,615,607 states generated (1,682,063 s/min), 1,311,965 distinct states found (215,313 ds/min), 757,066 states left on queue.
+Progress(13) at 2025-10-05 19:05:53: 13,410,188 states generated (2,794,581 s/min), 1,700,868 distinct states found (388,903 ds/min), 1,015,412 states left on queue.
+Progress(13) at 2025-10-05 19:06:53: 16,551,295 states generated (3,141,107 s/min), 2,064,019 distinct states found (363,151 ds/min), 1,234,958 states left on queue.
+Progress(13) at 2025-10-05 19:07:53: 19,600,614 states generated (3,049,319 s/min), 2,341,860 distinct states found (277,841 ds/min), 1,361,686 states left on queue.
+Progress(14) at 2025-10-05 19:08:53: 23,747,042 states generated (4,146,428 s/min), 2,748,162 distinct states found (406,302 ds/min), 1,547,972 states left on queue.
+Progress(14) at 2025-10-05 19:09:53: 27,270,919 states generated (3,523,877 s/min), 3,202,194 distinct states found (454,032 ds/min), 1,842,045 states left on queue.
+Progress(14) at 2025-10-05 19:10:53: 30,215,318 states generated (2,944,399 s/min), 3,558,084 distinct states found (355,890 ds/min), 2,060,342 states left on queue.
+Progress(14) at 2025-10-05 19:11:53: 32,725,346 states generated (2,510,028 s/min), 3,887,307 distinct states found (329,223 ds/min), 2,273,157 states left on queue.
+Progress(14) at 2025-10-05 19:12:53: 36,025,368 states generated (3,300,022 s/min), 4,245,509 distinct states found (358,202 ds/min), 2,480,022 states left on queue.
+Progress(14) at 2025-10-05 19:13:53: 39,065,255 states generated (3,039,887 s/min), 4,571,692 distinct states found (326,183 ds/min), 2,667,761 states left on queue.
+Progress(14) at 2025-10-05 19:14:53: 42,252,461 states generated (3,187,206 s/min), 4,865,860 distinct states found (294,168 ds/min), 2,817,379 states left on queue.
+Progress(14) at 2025-10-05 19:15:53: 45,279,086 states generated (3,026,625 s/min), 5,109,564 distinct states found (243,704 ds/min), 2,922,054 states left on queue.
+Progress(14) at 2025-10-05 19:16:53: 47,430,333 states generated (2,151,247 s/min), 5,299,000 distinct states found (189,436 ds/min), 3,003,190 states left on queue.
+Progress(14) at 2025-10-05 19:17:53: 49,440,378 states generated (2,010,045 s/min), 5,509,950 distinct states found (210,950 ds/min), 3,113,692 states left on queue.
+Progress(14) at 2025-10-05 19:18:53: 51,775,620 states generated (2,335,242 s/min), 5,722,011 distinct states found (212,061 ds/min), 3,201,384 states left on queue.
+Progress(14) at 2025-10-05 19:19:53: 54,550,804 states generated (2,775,184 s/min), 5,920,309 distinct states found (198,298 ds/min), 3,251,238 states left on queue.
+Error: TLC threw an unexpected exception.
+This was probably caused by an error in the spec or model.
+See the User Output or TLC Console for clues to what happened.
+The exception was a java.io.IOException
+: No space left on device
+Error: The error occurred when TLC was evaluating the nested
+expressions at the following positions:
+    The error call stack is empty.
+
+56201151 states generated, 6155973 distinct states found, 3415217 states left on queue.
+The depth of the complete state graph search is 15.
+Finished in 20min 29s at (2025-10-05 19:20:18)
+java.io.FileNotFoundException: /var/folders/sm/_j43klfd2w32kn6x_qcyqw2w0000gn/T/tlc-7489998256228502290/TLC.tla (No space left on device)
+	at java.base/java.io.FileOutputStream.open0(Native Method)
+	at java.base/java.io.FileOutputStream.open(FileOutputStream.java:293)
+	at java.base/java.io.FileOutputStream.<init>(FileOutputStream.java:235)
+	at java.base/java.io.FileOutputStream.<init>(FileOutputStream.java:184)
+	at util.SimpleFilenameToStream.read(SimpleFilenameToStream.java:231)
+	at util.SimpleFilenameToStream.locateAndCopyToFilesystemIfNecessary(SimpleFilenameToStream.java:218)
+	at util.SimpleFilenameToStream.locate(SimpleFilenameToStream.java:171)
+	at util.SimpleFilenameToStream.resolve(SimpleFilenameToStream.java:287)
+	at util.SimpleFilenameToStream.resolve(SimpleFilenameToStream.java:35)
+	at tlc2.tool.impl.Spec.getModuleFiles(Spec.java:694)
+	at tlc2.tool.impl.Tool.getModuleFiles(Tool.java:112)
+	at tlc2.tool.ModelChecker.getModuleFiles(ModelChecker.java:1227)
+	at tlc2.TLC.getModuleFiles(TLC.java:1474)
+	at tlc2.TLC.main(TLC.java:363)
+java.io.FileNotFoundException: /var/folders/sm/_j43klfd2w32kn6x_qcyqw2w0000gn/T/tlc-7489998256228502290/Naturals.tla (No space left on device)
+java.io.FileNotFoundException: /var/folders/sm/_j43klfd2w32kn6x_qcyqw2w0000gn/T/tlc-7489998256228502290/TLCExt.tla (No space left on device)
+	at tlc2.TLC.getModuleFiles(TLC.java:1474)
+	at tlc2.TLC.main(TLC.java:363)
