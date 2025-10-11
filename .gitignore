@@ -1,5 +1,25 @@
+# TLA+ Model Checker temporary files
+*.toolbox/
 states/
-TLC.out
+*.bin
+
+# Logs (keep specific verification logs)
 *.log
-*.tlc
-*.chk
+!verification_*.log
+!liveness_simulation.log
+
+# Mac system files
+.DS_Store
+
+# Temporary files
+*.tmp
+*.swp
+*~
+
+# Editor files
+.vscode/
+.idea/
+
+# Build artifacts (if any)
+build/
+dist/
